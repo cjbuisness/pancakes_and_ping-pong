@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pancakes and Ping Pong - Thanksgiving Breakfast</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@1.14.0/dist/full.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #faf3e1;
+      }
+      .title {
+        font-family: "Lobster", cursive;
+        color: #d1552d;
+      }
+      .subtitle {
+        font-family: "Lobster", cursive;
+        color: #f7941e;
+      }
+      .details {
+        font-family: "Open Sans", sans-serif;
+        color: #3c3c3b;
+      }
+      .turkey-icon {
+        width: 80px;
+        height: 80px;
+      }
+      #map {
+        width: 100%;
+        height: 400px;
+      }
+      #countdown {
+        font-family: "Open Sans", sans-serif;
+        font-size: 1.25rem;
+        margin-top: 20px;
+      }
+    </style>
+    <script src="script.js" defer></script>
+    <!-- Include the JS file -->
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
+    ></script>
+  </head>
+  <body class="min-h-screen flex flex-col justify-center items-center py-12">
+    <div class="bg-white shadow-lg rounded-lg p-6 text-center w-full max-w-lg">
+      <h1 class="text-5xl title mb-2">Gobble 'Til You Wobble</h1>
+      <img
+        src="https://i.imgur.com/Qkl3TqI.png"
+        alt="turkey"
+        class="turkey-icon mx-auto mb-4"
+      />
+      <p class="text-3xl subtitle mb-8">Pancakes and Ping Pong</p>
+
+      <p class="details text-lg">
+        Please join us for a fun-filled Thanksgiving breakfast!
+      </p>
+      <p class="details">
+        Bring your favorite breakfast dish, dessert, and enjoy with family and
+        friends.
+      </p>
+
+      <div class="mt-6">
+        <p class="details font-semibold text-lg">WHEN</p>
+        <p class="details">Thursday, November 28, 2024</p>
+        <p class="details">9:00 AM - 1:00 PM (PT)</p>
+        <div id="countdown"></div>
+        <a href="#" class="btn btn-outline-primary mt-4">Add to Calendar</a>
+      </div>
+
+      <div class="mt-6">
+        <p class="details font-semibold text-lg">WHERE</p>
+        <p class="details">4966 E. Fellars Drive</p>
+        <p class="details">Scottsdale, AZ 85254</p>
+        <a
+          href="https://goo.gl/maps/"
+          class="btn btn-outline-secondary mt-4"
+          target="_blank"
+          >View on Google Maps</a
+        >
+      </div>
+
+      <div id="map" class="my-6"></div>
+      <!-- Map container -->
+    </div>
+
+    <footer class="mt-12">
+      <p class="text-gray-500 text-sm">
+        © 2024 - Pancakes and Ping Pong Thanksgiving Event
+      </p>
+    </footer>
+  </body>
+</html>

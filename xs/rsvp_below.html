@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pancakes and Ping Pong - Thanksgiving Breakfast</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@1.14.0/dist/full.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+      defer
+    ></script>
+
+    <style>
+      nav {
+        margin: 0px;
+        padding: 0px;
+      }
+      body {
+        background-color: #faf3e1;
+        margin: 100; /* Removes default margin from the body */
+        padding: 1000; /* Optional: Ensures no padding is applied */
+      }
+      .title {
+        font-family: "Lobster", cursive;
+        color: #d1552d;
+      }
+      .subtitle {
+        font-family: "Lobster", cursive;
+        color: #f7941e;
+      }
+      .details {
+        font-family: "Open Sans", sans-serif;
+        color: #3c3c3b;
+      }
+      .turkey-icon {
+        width: 80px;
+        height: 80px;
+      }
+      /* Ensure the map takes up space properly on mobile */
+      #map {
+        width: 100%;
+        height: 300px;
+        min-height: 300px;
+      }
+
+      @media (max-width: 768px) {
+        #map {
+          height: 300px;
+        }
+      }
+      #countdown {
+        font-family: "Open Sans", sans-serif;
+        font-size: 1.25rem;
+        margin-top: 20px;
+      }
+    </style>
+
+    <script src="script.js" defer></script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
+    ></script>
+    <nav class="bg-base-100 bg-white shadow-md sticky top-0 z-10">
+      <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col items-center">
+        <div class="text-lg title">Pancakes and Ping Pong</div>
+
+        <div class="relative">
+          <div
+            id="dropdownMenu"
+            class="hidden absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-20"
+          >
+            <a
+              href="#details"
+              class="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >Details</a
+            >
+            <a
+              href="#location"
+              class="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >Location</a
+            >
+            <a
+              href="#map"
+              class="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >Map</a
+            >
+          </div>
+        </div>
+
+        <div class="mt-4 w-full flex justify-center">
+          <button
+            id="rsvp-button"
+            class="bg-yellow-500 text-white hover:bg-yellow-700 rounded py-2 px-10"
+          >
+            RSVP
+          </button>
+        </div>
+
+        <div id="rsvp" class="mt-6 hidden text-center">
+          <p class="details font-semibold text-lg">RSVP</p>
+          <p class="details">Please let us know if you will be attending!</p>
+          <form
+            action="https://formspree.io/f/xgveapwk"
+            method="POST"
+            class="flex flex-col items-center"
+          >
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              class="input input-bordered mt-2 w-full max-w-xs"
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              class="input input-bordered mt-2 w-full max-w-xs"
+              required
+            />
+            <button
+              type="submit"
+              class="bg-yellow-500 text-white hover:bg-yellow-700 mt-4 w-full rounded py-2 max-w-xs"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </head>
+  <body class="min-h-screen flex flex-col justify-center items-center py-0">
+    <div
+      class="bg-white shadow-lg rounded-lg p-6 text-center w-full max-w-lg mt-1"
+    >
+      <h1 class="text-5xl title mb-2">Gobble 'Til You Wobble</h1>
+      <img src="gobble.png" alt="turkey" class="turkey-icon mx-auto mb-4" />
+      <p class="text-3xl subtitle mb-8">Pancakes and Ping Pong</p>
+
+      <p class="details text-lg">
+        Please join us for a fun-filled Thanksgiving breakfast!
+      </p>
+      <p class="details">
+        Bring your favorite breakfast dish, dessert, and enjoy with family and
+        friends.
+      </p>
+
+      <div id="highlights" class="mt-6">
+        <h2 class="text-2xl title mb-2">Event Highlights</h2>
+        <ul class="list-disc list-inside">
+          <li>Delicious pancake varieties</li>
+          <li>Fun ping pong tournament</li>
+          <li>Prizes and giveaways!</li>
+        </ul>
+      </div>
+
+      <div class="mt-6">
+        <h2 class="text-2xl title mb-2">When</h2>
+        <p class="details">Thursday, November 28, 2024</p>
+        <p class="details">9:00 AM - 1:00 PM (PT)</p>
+        <div id="countdown"></div>
+        <button
+          id="rsvp-button"
+          class="bg-yellow-500 text-white hover:bg-yellow-700 mt-4 w-full rounded py-2"
+        >
+          RSVP
+        </button>
+        <!-- Changed text here -->
+      </div>
+
+      <div id="rsvp" class="mt-6 hidden">
+        <!-- Ensure there's only one RSVP section -->
+        <p class="details font-semibold text-lg">RSVP</p>
+        <p class="details">Please let us know if you will be attending!</p>
+        <form action="https://formspree.io/f/xgveapwk" method="POST">
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            class="input input-bordered mt-2"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email"
+            class="input input-bordered mt-2"
+            required
+          />
+          <button
+            type="submit"
+            class="bg-yellow-500 text-white hover:bg-yellow-700 mt-4 w-full rounded py-2"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+
+      <div class="mt-6">
+        <h2 class="text-2xl title mb-2">Where</h2>
+        <p class="details">4966 E. Fellars Drive</p>
+        <p class="details">Scottsdale, AZ 85254</p>
+        <a
+          href="https://www.google.com/maps/place/4966+E+Fellars+Dr,+Scottsdale,+AZ+85254/@33.6360465,-111.9725654,16z/data=!3m1!4b1!4m6!3m5!1s0x872b715efc8b27ff:0x6e33afa456226c97!8m2!3d33.6360465!4d-111.9725654!16s%2Fg%2F11cp8hjdr5?entry=ttu&g_ep=EgoyMDI0MTAyOS4wIKXMDSoASAFQAw%3D%3D"
+          class="bg-yellow-500 text-white hover:bg-yellow-700 mt-4 w-full rounded py-2 px-4 mt-4"
+          target="_blank"
+          >View on Google Maps</a
+        >
+      </div>
+
+      <div id="map" class="my-6 z-0"></div>
+      <!-- Map container -->
+    </div>
+    <button
+      id="scrollToTop"
+      class="fixed bottom-5 right-5 bg-yellow-500 text-white hover:bg-yellow-700 rounded-full p-3 shadow-lg transition-opacity duration-300 opacity-0 hover:opacity-100"
+    >
+      ↑
+    </button>
+    <footer class="mt-12">
+      <p class="text-gray-500 text-sm">
+        © 2024 - Made with <span class="text-red-500">&hearts;</span> by Cal
+        Hercules
+      </p>
+    </footer>
+  </body>
+</html>
