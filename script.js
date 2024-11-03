@@ -73,7 +73,7 @@ function handleThanksgivingAnimation() {
         setTimeout(() => {
             thanksgivingElement.style.display = 'none'; // Remove from the DOM
         }, 500); // Wait for the fade-out to complete
-    }, 1600); // Change the time as needed
+    }, 1500); // Change the time as needed
 }
 
 // Initialize everything after the page is loaded
