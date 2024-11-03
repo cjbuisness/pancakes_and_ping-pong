@@ -1,7 +1,7 @@
 const scrollToTopButton = document.getElementById('scrollToTop');
 
+// Show button when scrolling down 20px from the top
 window.onscroll = function() {
-    // Show button when scrolling down 20px from the top
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
         scrollToTopButton.style.opacity = 1; // Make button visible
     } else {
@@ -10,12 +10,21 @@ window.onscroll = function() {
 };
 
 scrollToTopButton.onclick = function() {
+    // Temporarily disable hover effect by removing the hover class
+    scrollToTopButton.classList.remove('hover:bg-yellow-700');
+    
     // Scroll to top smoothly
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
     });
+
+    // Re-enable hover effect after scrolling is complete
+    setTimeout(function() {
+        scrollToTopButton.classList.add('hover:bg-yellow-700');
+    }, 500); // Adjust the delay to match the scrolling duration if necessary
 };
+
 
 // Initialize Leaflet map
 function initMap() {
