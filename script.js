@@ -92,32 +92,40 @@ window.onload = function () {
     initMap(); // Initialize the map when the page loads
     
 };
+// Function to handle the RSVP and show confirmation message
 function handleRSVP(event) {
-    const name = event.target[0].value; // Get the name value
-    const email = event.target[1].value; // Get the email value
+    event.preventDefault(); // Prevent the form from submitting immediately
 
-    // You can show a confirmation alert here
-    alert(`Thank you, ${name}! Your RSVP has been received, and we look forward to seeing you!`);
+    const name = event.target.name.value; // Get the name value from the form
 
-    // Allow the form to submit normally
-    // No need to call event.preventDefault() since we want the form to be submitted
-    // If you want to reset the form after submission, you can use a submit event listener on the form
+    // Show the confirmation message
+    const confirmationMessage = document.getElementById("confirmationMessage");
+    confirmationMessage.style.display = "block"; // Display confirmation message
+
+    // Hide the form after submission
+    const form = document.getElementById("rsvpForm");
+    form.style.display = "none"; // Hide the form immediately
+
+    // Submit the form as soon as the confirmation message appears
+    setTimeout(() => {
+        form.submit(); // Submit the form directly to FormSubmit
+    }, 500); // Optional delay to simulate processing (500ms)
 }
-document.getElementById('rsvp-button').addEventListener('click', function() {
+
+// Toggle RSVP section visibility
+document.getElementById('rsvp-button').addEventListener('click', function () {
     const rsvpSection = document.getElementById('rsvp');
     rsvpSection.classList.toggle('hidden'); // Show/hide the RSVP section
 });
 
-// Attach the RSVP handler to the form
-document.querySelector('form').addEventListener('submit', handleRSVP); // Make sure this targets the right form
-
-document.getElementById('dropdownButton').addEventListener('click', function() {
+// Handle dropdown menu toggle
+document.getElementById('dropdownButton').addEventListener('click', function () {
     const dropdownMenu = document.getElementById('dropdownMenu');
     dropdownMenu.classList.toggle('hidden'); // Show/hide the dropdown menu
 });
 
 // Close dropdown if clicked outside
-window.addEventListener('click', function(event) {
+window.addEventListener('click', function (event) {
     const dropdownMenu = document.getElementById('dropdownMenu');
     const dropdownButton = document.getElementById('dropdownButton');
     if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {

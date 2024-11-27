@@ -62,17 +62,136 @@
         #map {
           height: 300px;
         }
+        .form-container {
+          padding: 1rem; /* Reduce padding on smaller screens */
+        }
       }
+      .input-text-color {
+        color: black;
+      }
+
+      /* Dark mode override */
+      @media (prefers-color-scheme: dark) {
+        /* Ensure input containers are white in dark mode */
+        .input-text-color {
+          color: white !important; /* Ensures the text is white in dark mode */
+        }
+
+        /* Ensure the input background is white in dark mode */
+        input,
+        textarea,
+        select {
+          background-color: white !important; /* Set background to white */
+          color: black !important; /* Ensure text remains black for readability */
+          border: 1px solid #ccc !important; /* Light border to maintain visibility */
+        }
+
+        /* Optional: If you want to override focus styles */
+        input:focus,
+        textarea:focus,
+        select:focus {
+          border-color: #ffcc00 !important; /* Optional: change focus color */
+          outline: none; /* Remove default outline */
+          box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.3); /* Optional: add focus ring */
+        }
+      }
+
+      /* Default styles */
+      .input-text-color {
+        color: black; /* Regular color for light mode */
+      }
+
+      input,
+      textarea,
+      select {
+        background-color: #f9f9f9; /* Light background color by default */
+        color: black; /* Text color */
+        border: 1px solid #ddd; /* Default light border */
+      }
+
+      /* Optional: If you want to add focus styles for light mode */
+      input:focus,
+      textarea:focus,
+      select:focus {
+        border-color: #f7941e; /* Example focus color */
+        outline: none; /* Remove default outline */
+        box-shadow: 0 0 0 3px rgba(247, 148, 30, 0.3); /* Optional: add focus ring */
+      }
+
       #countdown {
         font-family: "Open Sans", sans-serif;
         font-size: 1.25rem;
         margin-top: 20px;
       }
+
       #thanksgiving-animation {
         background-color: #ffcc00; /* Thanksgiving yellow */
         color: #d1552d; /* Text color */
         z-index: 1000; /* Ensure it's on top */
         transition: opacity 1s ease; /* Ensures the fade-out effect is smooth */
+      }
+
+      .form-container {
+        background-color: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 2rem;
+        max-width: 500px;
+        margin: auto;
+        flex-grow: 1; /* Allow this container to grow and take up available space */
+      }
+
+      .form-button {
+        background-color: #f7941e;
+        color: white;
+        border: none;
+        padding: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      .form-button:hover {
+        background-color: #d1552d;
+      }
+
+      .confirmation-message {
+        background-color: #d1552d;
+        color: white;
+        padding: 1rem;
+        border-radius: 5px;
+        display: none;
+        text-align: center;
+      }
+
+      .loading-spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-left-color: #3498db;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      footer {
+        margin-top: auto; /* Ensure footer stays at the bottom of the screen */
+        text-align: center;
+        padding: 0rem;
+        background-color: #faf3e1;
+      }
+      footer p {
+        margin: 0;
+        padding: 0;
+        color: #555;
       }
     </style>
 
@@ -82,11 +201,13 @@
       defer
       src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
     ></script>
-    <nav class="bg-base-100 bg-white shadow-md sticky top-0 z-10">
+    <nav
+      class="bg-base-100 bg-white shadow-md sticky top-0 z-10 border-b border-gray-300"
+    >
       <div
         class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center"
       >
-        <div class="text-lg title">Pancakes and Ping Pong</div>
+        <div class="text-lg title font-bold">Pancakes and Ping Pong</div>
         <div class="relative">
           <div
             id="dropdownMenu"
@@ -111,21 +232,25 @@
         </div>
       </div>
     </nav>
+
+    <link rel="preconnect" href="https://formsubmit.co" crossorigin />
+    <link rel="preconnect" href="https://www.google.com" crossorigin />
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
   </head>
   <body class="min-h-screen flex flex-col justify-center items-center py-0">
     <div
       id="thanksgiving-animation"
       class="fixed inset-0 flex justify-center items-center bg-white opacity-90"
     >
-      <h1 class="text-6xl font-bold title text-center">
+      <h1 class="text-6xl font-extrabold title text-center">
         <span>The Leshinskies Present:</span><br />
-        <span class="text-4xl">Pancakes and Ping Pong!</span>
+        <span class="text-4xl font-bold">Pancakes and Ping Pong!</span>
       </h1>
     </div>
     <div
       class="bg-white shadow-lg rounded-lg p-6 text-center w-full max-w-lg mt-1"
     >
-      <h1 class="text-5xl title mb-2">Gobble 'Til You Wobble</h1>
+      <h1 class="text-5xl title mb-2 font-extrabold">Gobble 'Til You Wobble</h1>
       <img src="gobble.png" alt="turkey" class="turkey-icon mx-auto mb-4" />
       <p class="text-3xl subtitle mb-8">Pancakes and Ping Pong</p>
 
@@ -138,16 +263,16 @@
       </p>
 
       <div id="highlights" class="mt-6">
-        <h2 class="text-2xl title mb-2">Event Highlights</h2>
+        <h2 class="text-2xl title mb-2 font-bold">Event Highlights</h2>
         <ul class="list-disc list-inside">
           <li>Delicious pancake varieties</li>
           <li>Fun ping pong tournament</li>
-          <li>Prizes and giveaways!</li>
+          <li>Friends, family, and community</li>
         </ul>
       </div>
 
       <div class="mt-6">
-        <h2 class="text-2xl title mb-2">When</h2>
+        <h2 class="text-2xl title mb-2 font-bold">When</h2>
         <p class="details">Thursday, November 28, 2024</p>
         <p class="details">9:00 AM - 1:00 PM (PT)</p>
         <div id="countdown"></div>
@@ -157,31 +282,61 @@
         >
           RSVP
         </button>
-        <!-- Changed text here -->
       </div>
 
       <div id="rsvp" class="mt-6 hidden">
-        <!-- Ensure there's only one RSVP section -->
-        <p class="details font-semibold text-lg">RSVP</p>
-        <p class="details">Please let us know if you will be attending!</p>
-        <form action="https://formspree.io/f/xgveapwk" method="POST">
+        <!-- Confirmation Message -->
+        <div
+          id="confirmationMessage"
+          class="confirmation-message"
+          style="display: none"
+        >
+          <div class="loading-spinner"></div>
+          Redirecting to the confirmation page. Please wait...
+        </div>
+
+        <!-- RSVP Form -->
+        <form
+          id="rsvpForm"
+          action="https://formsubmit.co/cjbusinessadventure@gmail.com"
+          method="POST"
+          class="space-y-4"
+          onsubmit="handleRSVP(event)"
+        >
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+          <input
+            type="hidden"
+            name="_subject"
+            value="Pancakes and Ping Pong - Thanksgiving Breakfast"
+          />
+          <input
+            type="hidden"
+            name="_confirmation"
+            value="Thank you for signing in!"
+          />
+          <input
+            type="hidden"
+            name="_autoresponse"
+            value="Thank you for participating in Free Stuff Day at Seattle Central College!"
+          />
           <input
             type="text"
             name="name"
             placeholder="Your Name"
-            class="input input-bordered mt-2 bg-white text-black border border-black focus:outline-none focus:ring focus:ring-yellow-500"
+            class="input input-bordered w-full p-4 input-text-color"
             required
           />
           <input
             type="email"
             name="email"
             placeholder="Your Email"
-            class="input input-bordered mt-2 bg-white text-black border border-black focus:outline-none focus:ring focus:ring-yellow-500"
+            class="input input-bordered w-full p-4 input-text-color"
             required
           />
           <button
             type="submit"
-            class="bg-yellow-500 text-white hover:bg-yellow-700 mt-4 w-full rounded py-2"
+            class="form-button bg-yellow-500 text-white hover:bg-yellow-700 w-full rounded py-2"
           >
             Submit
           </button>
@@ -189,7 +344,7 @@
       </div>
 
       <div class="mt-6">
-        <h2 class="text-2xl title mb-2">Where</h2>
+        <h2 class="text-2xl title mb-2 font-bold">Where</h2>
         <p class="details">4966 E. Fellars Drive</p>
         <p class="details">Scottsdale, AZ 85254</p>
         <a
@@ -209,10 +364,16 @@
     >
       ↑
     </button>
-    <footer class="mt-12">
-      <p class="text-gray-500 text-sm">
-        © 2024 - Made with <span class="text-red-500">&hearts;</span> by Cal
-        Hercules
+    <footer class="mt-4 mb-4">
+      <p class="text-gray-500 text-xs">
+        © 2024 - Made with <span class="text-red-500">&hearts;</span> by
+        <a
+          href="https://calherc.vercel.app"
+          class="text-blue-500 hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Cal Hercules</a
+        >
       </p>
     </footer>
   </body>
